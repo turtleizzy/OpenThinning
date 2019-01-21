@@ -195,8 +195,10 @@ void OpenThinning<TInputImage, TOutputImage>::ComputeThinImage(TOutputImage* thi
 			// that delete more than one front voxel coming from the current direction.
 			// This is done to ensure that the thinning result is most likely to be in the middle.
 			std::deque<std::tuple<unsigned short, unsigned short, unsigned short>> candidates;
+			#pragma omp parallel
 			{
 				// Check each voxel once
+				#pragma omp for
 				for (unsigned short z = 0; z < sizeZ; ++z)
 				{
 					for (unsigned short y = 0; y < sizeY; ++y)
@@ -219,6 +221,7 @@ void OpenThinning<TInputImage, TOutputImage>::ComputeThinImage(TOutputImage* thi
 							// the Simple Point criterion and - depending on the lookup table - the medial axis endpoint or
 							// medial surface point criterions
 							if (_lookupTable.getEntry(neighborhood))
+								#pragma omp critical
 								candidates.push_back(std::make_tuple(x, y, z));
 						}
 					}
