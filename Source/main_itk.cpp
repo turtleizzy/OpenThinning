@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 		}
 		{
 			for (const auto& v: vertices) {
-				for (int d=1;d<27;d++) 
+				for (int d=0;d<27;d++) 
 				{
 					output_type::IndexType idxNew, idx;
 					int totd=d, eligibleFlag=1;
@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 						totd /= 3;
 						if ((idxNew[i] < 0) || (idxNew[i] >= resIm->GetLargestPossibleRegion().GetSize(i))) eligibleFlag=0;
 					}
-					if (!eligibleFlag) continue;
+					if (!eligibleFlag || (idxNew == idx)) continue;
 					if (verticeImage->GetPixel(idxNew) > 0) {
 						edges.push_back({static_cast<int>(verticeImage->GetPixel(idx)), 
 										 static_cast<int>(verticeImage->GetPixel(idxNew)), d});
