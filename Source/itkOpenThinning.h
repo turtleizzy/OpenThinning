@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LookupTable.h"
-
+#include <deque>
 #include <itkImageToImageFilter.h>
 #include <itkImageRegionIterator.h>
 

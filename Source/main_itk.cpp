@@ -57,8 +57,14 @@ int main(int argc, char** argv)
 				for (int d=1;d<27;d++) 
 				{
 					output_type::IndexType idxNew, idx;
-					int totd=d;
-					for (int i=0;i<3;i++) { idx[i] = v[i]; idxNew[i] = v[i] + (totd % 3) - 1; totd /= 3;}
+					int totd=d, eligibleFlag=1;
+					for (int i=0;i<3;i++) { 
+						idx[i] = v[i]; 
+						idxNew[i] = v[i] + (totd % 3) - 1; 
+						totd /= 3;
+						if ((idxNew[i] < 0) || (idxNew[i] >= resIm->GetLargestPossibleRegion().GetSize(i))) eligibleFlag=0;
+					}
+					if (!eligibleFlag) continue;
 					if (verticeImage->GetPixel(idxNew) > 0) {
 						edges.push_back({static_cast<int>(verticeImage->GetPixel(idx)), 
 										 static_cast<int>(verticeImage->GetPixel(idxNew)), d});
